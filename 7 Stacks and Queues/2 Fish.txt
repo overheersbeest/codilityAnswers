@@ -1,0 +1,40 @@
+int solution(vector<int> &A, vector<int> &B) {
+    size_t n = A.size();
+    std::vector<int> fishSizesSwimmingDownstream;
+    int unmolestedFishSwimmingUpstream = 0;
+    for (size_t i = 0; i < n ; ++i)
+    {
+        if (B[i] == 0)
+        {
+            //upstream
+            bool fishStillAlive = true;
+            while (fishSizesSwimmingDownstream.size() > 0
+                   && fishStillAlive)
+            {
+                //conflict
+                if (A[i] < fishSizesSwimmingDownstream[fishSizesSwimmingDownstream.size() - 1])
+                {
+                    //upstream fish dies
+                    fishStillAlive = false;
+                }
+                else
+                {
+                    //downstream fish dies, upstream fish fights next fish in next loop
+                    fishSizesSwimmingDownstream.pop_back();
+                }
+            }
+            
+            if (fishStillAlive)
+            {
+                ++unmolestedFishSwimmingUpstream;
+            }
+        }
+        else
+        {
+            //downstream
+            fishSizesSwimmingDownstream.push_back(A[i]);
+        }
+    }
+    
+    return fishSizesSwimmingDownstream.size() + unmolestedFishSwimmingUpstream;
+}

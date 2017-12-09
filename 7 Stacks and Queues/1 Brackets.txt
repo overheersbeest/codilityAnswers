@@ -1,0 +1,38 @@
+#include <vector>
+
+int solution(string &S) {
+    std::vector<char> expectedClosingBracketOrder;
+    for (const char& ch : S)
+    {
+        switch (ch)
+        {
+        case '(':
+            expectedClosingBracketOrder.push_back(')');
+            break;
+        case '{':
+            expectedClosingBracketOrder.push_back('}');
+            break;
+        case '[':
+            expectedClosingBracketOrder.push_back(']');
+            break;
+        default:
+            if (expectedClosingBracketOrder.size() > 0
+                && ch == expectedClosingBracketOrder[expectedClosingBracketOrder.size() - 1])
+            {
+                expectedClosingBracketOrder.pop_back();
+            }
+            else
+            {
+                return 0;
+            }
+            break;
+        }
+    }
+    
+    if (expectedClosingBracketOrder.size() > 0)
+    {
+        return 0;
+    }
+    
+    return 1;
+}

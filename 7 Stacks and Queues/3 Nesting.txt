@@ -1,0 +1,30 @@
+#include <vector>
+
+
+int solution(string &S) {
+    int depth = 0;
+    for (const char& ch : S)
+    {
+        switch (ch)
+        {
+            case '(':
+            ++depth;
+            break;
+            case ')':
+            --depth;
+            if (depth < 0)
+            {
+                return 0;
+            }
+            break;
+        }
+    }
+    if (depth == 0)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}

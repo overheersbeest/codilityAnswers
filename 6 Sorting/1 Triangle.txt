@@ -1,0 +1,27 @@
+#include <algorithm>
+
+
+bool isTriangular(long p, long q, long r)
+{
+    return p + q > r
+            && p + r > q
+            && q + r > p;
+}
+
+
+int solution(vector<int> &A) {
+    int maxI = A.size() - 2;
+    if (maxI <= 0)
+    {
+        return 0;
+    }
+    std::sort(A.begin(), A.end());
+    for (int i = 0; i < maxI; ++i)
+    {
+        if (isTriangular(A[i], A[i+1], A[i+2]))
+        {
+            return 1;
+        }
+    }
+    return 0;
+}

@@ -1,0 +1,70 @@
+#include <unordered_map>
+#include <limits>
+
+const static int maxInt = std::numeric_limits<int>::max();
+
+
+struct distanceTracker
+{
+    distanceTracker() = delete;
+    distanceTracker(int a, int c, int g) : al(a), cl(c), gl(g) {};
+    int al;
+    int cl;
+    int gl;
+};
+
+vector<int> solution(string &S, vector<int> &P, vector<int> &Q) {
+    size_t n = S.size();
+    size_t m = Q.size();
+    
+    vector<int> results;
+    results.resize(m);
+    
+    vector<distanceTracker> tracker;
+    tracker.reserve(n);
+    
+    size_t aCounter = maxInt;
+    size_t cCounter = maxInt;
+    size_t gCounter = maxInt;
+    for (size_t i = 0; i < n; ++i)
+    {
+        char nucleotide = S[i];
+        switch (nucleotide)
+        {
+            case 'A':
+            aCounter = 0;
+            case 'C':
+            cCounter = 0;
+            case 'G':
+            gCounter = 0;
+            break;
+        }
+        tracker.emplace_back(aCounter, cCounter, gCounter);
+        aCounter += aCounter != maxInt;
+        cCounter += cCounter != maxInt;
+        gCounter += gCounter != maxInt;
+    }
+    
+    for (size_t i = 0; i < m; ++i)
+    {
+        int result = 4;
+        int rightmost = Q[i];
+        int lookRange = rightmost - P[i];
+        distanceTracker relevantTracker = tracker[rightmost];
+        if (relevantTracker.al <= lookRange)
+        {
+            result = 1;
+        }
+        else if (relevantTracker.cl <= lookRange)
+        {
+            result = 2;
+        }
+        else if (relevantTracker.gl <= lookRange)
+        {
+            result = 3;
+        }
+        results[i] = result;
+    }
+    
+    return results;
+}

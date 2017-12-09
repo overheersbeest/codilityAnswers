@@ -1,0 +1,37 @@
+inline int RecursiveSum(int x) {
+  return (x <= 0 ? 0 : x + RecursiveSum(x - 1));
+}
+
+
+int solution(vector<int> &A) {
+    int n = A.size();
+    
+    std::vector<int> beginnings;
+    std::vector<int> ends;
+    beginnings.resize(n);
+    ends.resize(n);
+    for (int i = 0; i < n; ++i)
+    {
+        ++beginnings[std::max(0LL, (long long)(i - A[i]))];
+        ++ends[std::min((long long)(n - 1), (long long)(i + A[i]))];
+    }
+    
+    int currentCircles = 0;
+    int returnValue = 0;
+    for (int i = 0; i < n; ++i)
+    {
+        // collision between new circles
+        returnValue += RecursiveSum(beginnings[i] - 1);
+        // collision new circles with existing circles
+        returnValue += currentCircles * beginnings[i];
+        if (returnValue > 10000000)
+        {
+            return -1;
+        }
+        //upkeep circle count
+        currentCircles += beginnings[i];
+        currentCircles -= ends[i];
+    }
+    
+    return returnValue;
+}

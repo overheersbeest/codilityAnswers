@@ -1,0 +1,21 @@
+int solution(vector<int> &H) {
+    vector<int> blockHeights;
+    int numBlocks = 0;
+    for (int h : H)
+    {
+        while (blockHeights.size() > 0
+               && h < blockHeights[blockHeights.size() - 1])
+        {
+            //we need to be lower
+            blockHeights.pop_back();
+        }
+        if (blockHeights.size() == 0
+            || h > blockHeights[blockHeights.size() - 1])
+        {
+            //we need to be higher
+            blockHeights.push_back(h);
+            ++numBlocks;
+        }
+    }
+    return numBlocks;
+}

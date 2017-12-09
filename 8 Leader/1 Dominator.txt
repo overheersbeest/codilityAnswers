@@ -1,0 +1,42 @@
+int solution(vector<int> &A) {
+    size_t n = A.size();
+    if (n > 0)
+    {
+        int dominatorContender = A[0];
+        int dominatorStrength = 0;
+        for (int a : A)
+        {
+            if (a == dominatorContender)
+            {
+                ++dominatorStrength;
+            }
+            else
+            {
+                --dominatorStrength;
+                if (dominatorStrength < 0)
+                {
+                    dominatorStrength = 1;
+                    dominatorContender = a;
+                }
+            }
+        }
+        
+        //validate if correct
+        int counter = 0;
+        size_t firstOccurence = 0;
+        for (size_t i = 0; i < n; ++i)
+        {
+            if (A[i] == dominatorContender)
+            {
+                ++counter;
+                firstOccurence = i;
+            }
+        }
+        
+        if (counter > n / 2)
+        {
+            return firstOccurence;
+        }
+    }
+    return -1;
+}
