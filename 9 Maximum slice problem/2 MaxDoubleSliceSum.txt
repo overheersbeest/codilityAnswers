@@ -1,0 +1,55 @@
+#include <limits>
+
+int solution(vector<int> &A) {
+    int bestSum = 0;
+    int sumSoFar = 0;
+    int bestYValueSoFar = A[1];
+    int sumToBestYValue = A[1];//including Y itself
+    
+    int lastI = A.size() - 1;
+    for (int i = 2; i <= lastI; ++i)
+    {
+        //std::cout << "BEG i: " << i << ", bestSum: " << bestSum << ", sumSoFar: " << sumSoFar << ", bestYValueSoFar: " << bestYValueSoFar << ", sumToBestYValue: " << sumToBestYValue << "\n";
+        
+        bool lastIndexWasNegative = A[i-1] < 0;
+        if (A[i] >= 0
+            && lastIndexWasNegative
+            && sumSoFar < 0
+            && i < lastI - 1)
+        {
+            //new X (i - 1)
+            sumSoFar = 0;
+            bestYValueSoFar = A[i];
+        }
+        else
+        {
+            sumSoFar += A[i];
+        }
+        
+        //std::cout << "MID i: " << i << ", bestSum: " << bestSum << ", sumSoFar: " << sumSoFar << ", bestYValueSoFar: " << bestYValueSoFar << ", sumToBestYValue: " << sumToBestYValue << "\n";
+        
+        if (sumSoFar - A[i] > bestSum)
+        {
+            //new Z
+            bestSum = sumSoFar - A[i];
+        }
+        if (A[i] < bestYValueSoFar
+                 && i != lastI)
+        {
+            //we have a new best Y value
+            sumSoFar += bestYValueSoFar;
+            sumSoFar -= A[i];
+            bestYValueSoFar = A[i];
+            if (sumToBestYValue < 0)
+            {
+                sumSoFar -= sumToBestYValue;
+            }
+            sumToBestYValue = sumSoFar + bestYValueSoFar;
+        }
+        
+        //std::cout << "BEG i: " << i << ", bestSum: " << bestSum << ", sumSoFar: " << sumSoFar << ", bestYValueSoFar: " << bestYValueSoFar << ", sumToBestYValue: " << sumToBestYValue << "\n";
+        //std::cout << "\n";
+    }
+    
+    return bestSum;
+}
